@@ -123,10 +123,7 @@ const herb:
         // execute each elements command if it exists
         for(let i: number = 0; i < _tags.length; i++)
         {   
-            if(_tags[i]!.map == null)
-            {
-                _tags[i]!.element.innerHTML = eval(generateCommand(_tags[i]!));
-            }
+            _tags[i]!.element.innerHTML = eval(generateCommand(_tags[i]!));
         }
     },
     /**
