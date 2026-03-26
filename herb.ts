@@ -92,7 +92,9 @@ const herb:
 {
     readonly refresh: Function,
     readonly propagate: Function,
-    readonly initialise: Function
+    readonly initialise: Function,
+    readonly initialiseAndPropagate: Function,
+    readonly start: Function
 } =
 {
     /**
@@ -139,6 +141,21 @@ const herb:
             const tag: HerbElement | null = createTag(tags[i]!);
             if(tag) _tags.push(tag);
         }
+    },
+    /**
+     * Run initialise and propagate, also known as `start`
+     */
+    initialiseAndPropagate: (): void => 
+    {
+        herb.initialise();
+        herb.propagate();
+    },
+    /**
+     * Run initialise and propagate, also known as `initialiseAndPropagate`
+     */
+    start: (): void =>
+    {
+        herb.initialiseAndPropagate();
     }
 }
 
