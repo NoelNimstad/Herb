@@ -1,4 +1,4 @@
-# Herb
+# Herb 🌱
 Herb is a tiny JavaScript function collection allowing dynamic pages without heavy libraries such as React or Vue.
 
 # Installation
