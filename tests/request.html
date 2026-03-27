@@ -1,0 +1,26 @@
+<body>
+    <p herb id="nameday">`Today is ${ nameday }'s nameday.`</p>
+    <script src="../build/herb.bundle.js"></script>
+    <script>
+        var nameday = "[loading...]";
+
+        (async () =>
+        {
+            const res = await fetch("https://nameday.abalin.net/api/V2/today/",
+            {
+                method: "GET",
+                headers:
+                {
+                    Accept: "application/json"
+                }
+            });
+            
+            const json = await res.json();
+            nameday = json.data.se;
+
+            herb.refresh("nameday");
+        })();
+
+        herb.start();
+    </script>
+</body>

@@ -1,0 +1,16 @@
+<body>
+    <span herb id="counter">counter</span>
+    <button id="increment">Increment</button>
+    <script src="../build/herb.bundle.js"></script>
+    <script>
+        var counter = 0;
+
+        document.getElementById("increment").addEventListener("click", () =>
+        {
+            counter++;
+            herb.refresh("counter");
+        });
+
+        herb.start();
+    </script>
+</body>

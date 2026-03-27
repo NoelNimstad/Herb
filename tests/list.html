@@ -1,0 +1,15 @@
+<body>
+    <p>My shopping list:</p>
+    <ul herb map="my_list"
+        template="tag('li', $h)"></ul>
+    <script src="../build/herb.bundle.js"></script>
+    <script>
+        var my_list =
+        [
+            "Apple",
+            "Banana",
+            "Orange"
+        ];
+        herb.start();
+    </script>
+</body>
