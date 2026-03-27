@@ -8,7 +8,7 @@ curl https://raw.githubusercontent.com/NoelNimstad/Herb/refs/heads/master/build/
 ```
 
 # Documentation
-Basic example
+Basic example ([see file](./tests/title.html))
 ```html
 <!-- Input -->
 <h1 herb>title</h1>
@@ -21,7 +21,7 @@ Basic example
 <h1>Hello World</h1>
 ```
 
-List example
+List example ([see file](./tests/list.html))
 ```html
 <!-- Input -->
 <ul herb map="my_list"
