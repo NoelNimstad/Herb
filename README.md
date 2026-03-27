@@ -1,13 +1,13 @@
 # Herb 🌱
 Herb is a tiny JavaScript function collection allowing dynamic pages without heavy libraries such as React or Vue.
 
-# Installation
+## Installation
 Get the [`herb.js`](./build/herb.bundle.js) file by running:
 ```
 curl https://raw.githubusercontent.com/NoelNimstad/Herb/refs/heads/master/build/herb.bundle.js > herb.js
 ```
 
-# Documentation
+## Example
 Basic example ([see file](./tests/title.html))
 ```html
 <!-- Input -->
