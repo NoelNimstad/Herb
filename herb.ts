@@ -69,6 +69,39 @@ function createTag(element: Element): HerbElement | null
     };
 }
 
+function processFauxMLOptions(options: string): string[][]
+{
+    if(options.trim().length === 0) return [];
+
+    let result: string[][] = [];
+    const matches: string[][] = [...options.matchAll(/(\w+)(=("[\s\S]+?"|\d+))?/g)];
+
+    for(let i: number = 0; i < matches.length; i++)
+    {
+        result.push([matches[i]![1]!, matches[i]![3]!.substring(1, matches[i]![3]!.length - 1)]);
+    }
+
+    return result;
+}
+
+function processFauxML(content: string): string
+{
+    // If there is no more FauxML left
+    if(!/<[a-zA-Z]+[^>]*>.*?<\/[a-zA-Z]+>/.test(content))
+    {
+        return content;
+    }
+
+    return content.replace(/<([a-zA-Z]+)([^>]*)>([\s\S]*?)<\/\1>/g, (_, tagName: string, attributes: string, innerContent: string) =>
+    {
+        const processedInnerContent: string = processFauxML(innerContent);
+        const processedAttributes: string[][] = processFauxMLOptions(attributes);
+
+        console.log(`tag("${ tagName }", ${ processedInnerContent }, ${ JSON.stringify(processedAttributes) })`);
+        return `tag("${ tagName }", ${ processedInnerContent }, ${ JSON.stringify(processedAttributes) })`;
+    });
+}
+
 // global array of current HerbTags
 let _tags: Array<HerbElement> = [];
 /**
@@ -76,17 +109,21 @@ let _tags: Array<HerbElement> = [];
  */
 function generateCommand(element: HerbElement): string
 {
+    let result: string = element.content!;
+
+    if(herb.beta.JSX)
+    {
+        result = processFauxML(result);
+    }
+
     if(element.map != null)
     {
-        // if it is a map, we set up the map command
-        return `${ element.map }.map($h => { return ${ element.content } }).join('')`;
+        return `${ element.map }.map($h => { return ${ result } }).join('')`;
     } else
     {
-        // otherwise, we keep the default command provided
-        return element.content!;
+        return result;
     }
 }
-
 // main Herb object
 const herb:
 {
@@ -94,7 +131,11 @@ const herb:
     readonly propagate: Function,
     readonly initialise: Function,
     readonly initialiseAndPropagate: Function,
-    readonly start: Function
+    readonly start: Function,
+    readonly beta:
+    {
+        JSX: boolean
+    }
 } =
 {
     /**
@@ -130,7 +171,7 @@ const herb:
      * Get all HTML tags which need Herb-ing and store them in _tags
      * Note that this function must be run before propagation or refreshing!
      */
-    initialise: (): void =>
+    initialise: (...features: string[]): void =>
     {   
         const tags: Array<Element> = [...Array.from(document.querySelectorAll("[herb]"))];
         for(let i: number = 0; i < tags.length; i++)
@@ -138,21 +179,41 @@ const herb:
             const tag: HerbElement | null = createTag(tags[i]!);
             if(tag) _tags.push(tag);
         }
+        
+        for(let i: number = 0; i < features.length; i++)
+        {
+            switch(features[i])
+            {
+                case "FauxML":
+                    herb.beta.JSX = true;
+                    break;
+                default:
+                    console.error(`Beta feature ${ features[i] } does not exist!`);
+                    break;
+            }
+        }
     },
     /**
      * Run initialise and propagate, also known as `start`
      */
-    initialiseAndPropagate: (): void => 
+    initialiseAndPropagate: (...features: string[]): void => 
     {
-        herb.initialise();
+        herb.initialise(...features);
         herb.propagate();
     },
     /**
      * Run initialise and propagate, also known as `initialiseAndPropagate`
      */
-    start: (): void =>
+    start: (...features: string[]): void =>
     {
-        herb.initialiseAndPropagate();
+        herb.initialiseAndPropagate(...features);
+    },
+    /**
+     * Beta feature configuration
+     */
+    beta:
+    {
+        JSX: false
     }
 }
 

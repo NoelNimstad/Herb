@@ -1,6 +1,8 @@
 <body>
     <p>My shopping list:</p>
-    <ul herb map="my_list">tag("li", $h)</ul>
+    <ul herb map="my_list">
+        <li>$h</li>
+    </ul>
     <script src="../build/herb.bundle.js"></script>
     <script>
         var my_list =
@@ -9,6 +11,7 @@
             "Banana",
             "Orange"
         ];
-        herb.start();
+
+        herb.start("FauxML");
     </script>
 </body>
