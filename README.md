@@ -28,8 +28,7 @@ Basic example ([see file](./tests/title.html))
 List example ([see file](./tests/list.html))
 ```html
 <!-- Input -->
-<ul herb map="my_list"
-    template="tag('li', $h)"></ul>
+<ul herb map="my_list">tag("li", $h)</ul>
 <script>
     var my_list =
     [
