@@ -69,7 +69,6 @@ FauxML list example ([see file](./tests/list_FauxML.html))
         "Banana",
         "Orange"
     ];
-
     herb.start("FauxML");
 </script>
 
